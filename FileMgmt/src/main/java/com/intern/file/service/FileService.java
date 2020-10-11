@@ -18,14 +18,14 @@ import com.intern.file.constant.GlobalConstant;
 public class FileService {
 	Logger logger = org.slf4j.LoggerFactory.getLogger(FileService.class);
 	
-	   public String getFolderPath(String location) {
+	   public String getFolderPath(Integer lo,String name) {
 
 	        StringBuilder path = new StringBuilder();
-	        // root folder: upload
+	        
 	        path.append(GlobalConstant.FolderName.FOLDER_ROOT).append("/");
-	        // choose next folder
+	
 	        String nextFolder;
-	        Integer lo = Integer.parseInt(location);
+	      
 	        if (lo.equals(GlobalConstant.FolderLocation.LOCATION_NRC)) {
 	            nextFolder = GlobalConstant.FolderName.NRC;
 	        } else if (lo.equals(GlobalConstant.FolderLocation.LOCATION_PROFILE)) {
@@ -34,27 +34,33 @@ public class FileService {
 	       else {
 	            nextFolder = GlobalConstant.FolderName.FOLDER_OTHER;
 	        }
-	        // append next folder
-	        path.append(nextFolder).append("/");
-	        // append user
-
-	
-	        // append current time
+	      
+	        path.append(nextFolder).append("/").append(name).append("/");
+	       
 	        Double ra = Math.random();
 	        Long random=(long) (ra*10000);
-	        logger.info("Random path ll is {}",random);
+	   
 	        path.append(random);
 	        path.append(System.currentTimeMillis());
-
+	       
+	       
 	        return path.toString();
 	    }
 	   
 	
+	   
+	   
+	   
+	   
+	   
 	 public Long saveFile(MultipartFile file, String path) throws IOException {
-	        if (file.isEmpty()) {
+	       
+		 if (file.isEmpty()) {
 	            throw new RuntimeException("File is empty");
 	        }
+	        
 	        Path location = Paths.get(path);
+	        
 	        if (Files.notExists(location)) {
 	            new File(location.toString()).mkdirs();
 	        }
